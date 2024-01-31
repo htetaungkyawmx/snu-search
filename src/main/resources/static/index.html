@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNU Search</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+<style>
+a {
+    cursor: pointer;
+}
+#status {
+    width: 600px;
+    height: 20px;
+    border-radius: 3px;
+    font-color: #FFF;
+    padding: 5px;
+}
+</style>
+</head>
+<body>
+<div style="display: inline-block; margin-left: 5px;">
+    <div class="pure-menu pure-menu-horizontal" style="margin-top: 5px;">
+        <li class="pure-menu-item pure-menu-selected pure-menu-has-children pure-menu-allow-hover" style="width: 100px;">
+            <a id="selected_menu1" class="pure-menu-link">Login</a>
+            <ul id="menu_option1" class="pure-menu-children">
+                <li id="login" class="pure-menu-item" style="display: none;">
+                    <a class="pure-menu-link">Login</a>
+                </li>
+                <li id="logout" class="pure-menu-item">
+                    <a class="pure-menu-link">Logout</a>
+                </li>
+                <li id="join" class="pure-menu-item">
+                    <a class="pure-menu-link">Join</a>
+                </li>
+                <li id="leave" class="pure-menu-item">
+                    <a class="pure-menu-link">Leave</a>
+                </li>
+                <li id="recover" class="pure-menu-item">
+                    <a class="pure-menu-link">Recover</a>
+                </li>
+            </ul>
+        </li>
+        <form class="pure-form" style="display: inline-block">
+            <input id="input_id" type="text" placeholder="ID" />
+            <input id="input_passwd" type="password" placeholder="Password" />
+            <button id="btn_option1" class="pure-button pure-button-primary" style = "width: 100px;">Login</button>
+            <br />
+        </form>
+    </div>
+    <div class="pure-menu pure-menu-horizontal" style="margin-top: 5px;">
+        <li class="pure-menu-item pure-menu-selected pure-menu-has-children pure-menu-allow-hover" style="width: 100px;">
+            <a id="selected_menu2" class="pure-menu-link">Search</a>
+            <ul id="menu_option2" class="pure-menu-children">
+                <li id="search" class="pure-menu-item" style="display: none;">
+                    <a class="pure-menu-link">Search</a>
+                </li>
+                <li id="save_data" class="pure-menu-item">
+                    <a class="pure-menu-link">Save_Data</a>
+                </li>
+                <li id="load_data" class="pure-menu-item">
+                    <a class="pure-menu-link">Load_Data</a>
+                </li>
+                <li id="load_fri" class="pure-menu-item">
+                    <a class="pure-menu-link">Load_Fri</a>
+                </li>
+                <li id="load_hot" class="pure-menu-item">
+                    <a class="pure-menu-link">Load_Hot</a>
+                </li>
+                <li id="load_acc" class="pure-menu-item" style="display: none;">
+                    <a class="pure-menu-link">Load_Acc</a>
+                </li>
+                <li id="load_log" class="pure-menu-item" style="display: none;">
+                    <a class="pure-menu-link">Load_Log</a>
+                </li>
+            </ul>
+        </li>
+        <form class="pure-form" style="display: inline-block; margin-top: 5px; margin-bottom: 5px;">
+            <input id="input_search" type="text" class="pure-input-1-2" placeholder="Search keyword" style="width: 402px;"/>
+            <button id="btn_option2" class="pure-button pure-button-primary" style = "width: 100px; background-color: #5A4">Search</button>
+        </form>
+    </div>
+    <form class="pure-form">
+        <textarea id="panel1" readonly class="pure-input-1-2" style="width: 614px; height: 400px; display: block; overflow-y: auto; background-color: #FFF;"></textarea>
+    </form>
+    <div id="account_status" style="font-size: 20px; font-weight: bold; color: #172"></div>
+</div>
+<div style="display: inline-block; vertical-align: top;">
+    <form class="pure-form">
+        <textarea id="panel2" readonly class="pure-input-1-2" style="width: 500px; height: 489px; margin-top: 5px; overflow-y: auto; font-size: 12px; background-color: #FFF;"></textarea>
+    </form>
+</div>
+</body>
+<script>
+document.querySelector("#menu_option1").addEventListener("click", (e) => {
+    document.querySelector("#" + document.querySelector("#selected_menu1").innerHTML.toLowerCase()).style.display = "block";
+    document.querySelector("#selected_menu1").innerHTML = e.target.childNodes[0].textContent;
+    document.querySelector("#" + document.querySelector("#selected_menu1").innerHTML.toLowerCase()).style.display = "none";
+    document.querySelector("#btn_option1").innerHTML = e.target.childNodes[0].textContent;
+    document.querySelector("#menu_option1").style.pointerEvents = "none";
+    setTimeout(() => {document.querySelector("#menu_option1").style.pointerEvents = "auto";}, 100);
+});
+document.querySelector("#menu_option2").addEventListener("click", (e) => {
+    document.querySelector("#" + document.querySelector("#selected_menu2").innerHTML.toLowerCase()).style.display = "block";
+    document.querySelector("#selected_menu2").innerHTML = e.target.childNodes[0].textContent;
+    document.querySelector("#" + document.querySelector("#selected_menu2").innerHTML.toLowerCase()).style.display = "none";
+    document.querySelector("#btn_option2").innerHTML = e.target.childNodes[0].textContent;
+    document.querySelector("#menu_option2").style.pointerEvents = "none";
+    setTimeout(() => {document.querySelector("#menu_option2").style.pointerEvents = "auto";}, 100);
+    if (e.target.childNodes[0].textContent == "Search" ||
+        e.target.childNodes[0].textContent == "Save_Data") {
+        document.querySelector("#input_search").placeholder = "Search keyword";
+        document.querySelector("#input_search").className += "pure-input-1-2";
+    }else if(e.target.childNodes[0].textContent == "Load_Fri"){
+        document.querySelector("#input_search").placeholder = "Fri's User ID";
+        document.querySelector("#input_search").className += "pure-input-1-2";
+    }else {
+        document.querySelector("#input_search").placeholder = "";
+        document.querySelector("#input_search").className += "pure-input-1-2 pure-button-disabled";
+    }
+});
+
+document.querySelector("#btn_option1").addEventListener("click", async (e) => {
+    e.preventDefault();
+    let id = document.querySelector("#input_id").value;
+    let passwd = document.querySelector("#input_passwd").value;
+    let type = e.target.childNodes[0].data.toLowerCase();
+    let URL = `http://localhost:8080/user/${type}?id=${id}&passwd=${passwd}`;
+    try {
+        const response = await fetch(URL);
+
+        const data = await response.json();
+        document.querySelector("#panel1").innerHTML = data.message;
+        document.querySelector("#panel1").scrollTop = 100000;
+
+        if (type == "login" && response.ok) {
+            document.querySelector("#account_status").innerHTML = "LOGIN ID: " + id;
+            if (id == "admin") {
+                document.querySelector("#load_acc").style.display = "block";
+                document.querySelector("#load_log").style.display = "block";
+            }
+        } else if (type == "logout" || type == "leave") {
+            document.querySelector("#account_status").innerHTML = "";
+        }
+
+        document.querySelector("#input_id").value = "";
+        document.querySelector("#input_passwd").value = "";
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+    }
+
+    document.querySelector("#panel2").innerHTML += "[req] " + URL + "\n";
+    document.querySelector("#panel2").scrollTop = 100000;
+});
+
+document.querySelector("#btn_option2").addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (document.querySelector("#account_status").innerHTML == "") {
+        alert("Please login!");
+        document.querySelector("#input_search").value = "";
+        return;
+    }
+    let search = document.querySelector("#input_search").value;
+    let type = e.target.childNodes[0].data.toLowerCase();
+    let user = document.querySelector("#account_status").innerText.substring(10);
+    let URL = `http://localhost:8080/data/${type}?q=${search}&user=${user}`;
+
+    try {
+        const response = await fetch(URL);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const responseData = await response.text();
+        document.querySelector("#panel1").innerHTML = responseData;
+        document.querySelector("#panel1").scrollTop = 100000;
+        document.querySelector("#input_search").value = "";
+
+        const res = "Response code: " + response.status + " " + response.statusText + ", Content length: " + responseData.length;
+        document.querySelector("#panel2").innerHTML += `[res] ${res}\n`;
+        document.querySelector("#panel2").scrollTop = 100000;
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+    }
+
+    document.querySelector("#panel2").innerHTML += `[req] ${URL}\n`;
+});
+</script>
+</html>
